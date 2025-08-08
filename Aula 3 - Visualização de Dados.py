@@ -225,31 +225,3 @@ fig.update_traces(textinfo='percent+label')
 fig.show()
 
 df.head()
-
-pip install pycountry
-
-import pycountry
-
-def iso2_to_iso3(code):
-    try:
-        return pycountry.countries.get(alpha_2=code).alpha_3
-    except:
-        return None
-
-df_limpo['residencia_iso3'] = df_limpo['residência'].apply(iso2_to_iso3)
-
-df_ds = df_limpo[df_limpo['cargo'] == 'Data Scientist']
-media_ds_pais = df_ds.groupby('residencia_iso3')['salário_em_usd'].mean().reset_index()
-
-fig = px.choropleth(media_ds_pais,
-                    locations='residencia_iso3',
-                    color='salário_em_usd',
-                    color_continuous_scale='rdylgn',
-                    title='Salário médio de Cientista de Dados por país',
-                    labels={'salário_em_usd': 'Salário médio (USD)', 'residencia_iso3': 'País'})
-
-fig.show()
-
-df_limpo.head()
-
-df_limpo.to_csv('dados-imersao-final.csv', index=False)
